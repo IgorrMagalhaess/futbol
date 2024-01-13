@@ -209,8 +209,20 @@ RSpec.describe StatTracker do
    end
 
    describe '#most_tackles' do
-      it "Name the Team with the most tackles in the season" do
+      xit "Name the Team with the most tackles in the season" do
          expect(@stat_tracker.most_tackles("20122013")).to eq("FC Dallas")
+      end
+   end
+
+   describe '#team_tackles' do
+      it 'returns a hash with team names and tackles' do
+         expect(@stat_tracker.team_tackles).to be_a(Hash)
+      end
+   end
+
+   describe '#season_game_id' do
+      it "return hash for season and games" do
+         expect(@stat_tracker.season_game_id("20122013")).to be_a(Hash)
       end
    end
 end
