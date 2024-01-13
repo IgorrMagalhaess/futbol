@@ -185,7 +185,14 @@ class StatTracker
       end
       convert_team_id_to_name(least_accurate_team_by_season[0])
    end
-
+   
+   def most_tackles(season_id)
+      teams_tackles = Hash.new(0)
+      total_tackles = @data_game_teams.each do |game_team|
+         teams_tackles[convert_team_id_to_name(game_team.team_id)] += game_team.tackles
+      end
+      teams_tackles
+   end
 
 #Helper Method
    def calculate_percentage(num1 , num2)
@@ -274,5 +281,12 @@ class StatTracker
          game.season == season_id
       end
       game_id_by_season.game_id
+   end
+
+   
+   #Name of the Team with the most tackles in the season
+
+   def fewest_tackles
+
    end
 end
