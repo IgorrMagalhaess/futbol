@@ -187,11 +187,7 @@ class StatTracker
    end
    
    def most_tackles(season_id)
-      teams_tackles = Hash.new(0)
-      total_tackles = @data_game_teams.each do |game_team|
-         teams_tackles[convert_team_id_to_name(game_team.team_id)] += game_team.tackles
-      end
-      teams_tackles
+      
    end
 
 #Helper Method
@@ -274,6 +270,7 @@ class StatTracker
       season_games = @data_games.find_all do |game| 
          game.season == season
       end
+      #require 'pry' ; binding.pry
    end
 
    def convert_season_id_to_game_id(season_id)
@@ -283,8 +280,27 @@ class StatTracker
       game_id_by_season.game_id
    end
 
-   
+   def season_game_id(season_id)
+      season_games = Hash.new { |h_obj, k| h_obj[k] = [] }
+      @data_games.each do |game|
+         season_games[game.season] = season_games[game.season] << game.game_id
+         #if season_games.include? ___ do team_tackles
+      end
+      season_games
+   end
    #Name of the Team with the most tackles in the season
+   
+   def team_tackles
+      teams_tackles = Hash.new{ |hash, key| hash[key] = {total_tackles: 0, game_id: 0} }
+      @data_game_teams.each do |game_team|
+         teams_tackles[game_team.team_id].each do |total_tackles, game_id| 
+            teams_tackles[game_team.team_id][:total_tackles] = game_team.tackles
+            teams_tackles[game_team.team_id][:game_id] = game_id
+         end
+         teams_tackles
+         require 'pry' ; binding.pry
+      end
+   end
 
    def fewest_tackles
 
