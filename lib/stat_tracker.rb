@@ -154,8 +154,8 @@ class StatTracker
       avg_goals_by_season
    end
 
-   def winingest_coach(season_id)
-      best_coach = coach_game_stats(season_id).max_by do |coach, stats|
+   def winningest_coach(season_id)
+      best_coach = coach_game_stats(season_id).each do |coach, stats|
          win_percentage = stats[:games_won].to_f / stats[:number_of_games]
          win_percentage 
       end
@@ -176,6 +176,7 @@ class StatTracker
          most_accurate_team.team_id if game.game_id == most_accurate_team.game_id
       end
       convert_team_id_to_name(most_accurate_team_by_season[0])
+      # require'pry';binding.pry
    end
 
    def least_accurate_team(season)
@@ -274,5 +275,35 @@ class StatTracker
          game.season == season_id
       end
       game_id_by_season.game_id
+   end
+
+   def most_tackles(season)
+      tackles = Hash.new(0)
+      @data_game_teams.each do |data_game_team|
+         tackles[data_game_team.team_id] += data_game_team.tackles
+      end
+      require'pry';binding.pry
+      
+      #retruns GameTeam object with most tackles
+      most_tackles = tackles.max_by {|data_game_team , total_tackles| total_tackles}.first
+      most_tackles_by_season = season_games(season).filter_map do |game|
+         most_tackles.team_id if game.game_id == most_tackles.game_id
+      end
+      convert_team_id_to_name(most_tackles_by_season[0])
+   end
+   
+   def fewest_tackles(season)
+      tackles = Hash.new(0)
+      @data_game_teams.each do |data_game_team|
+         tackles[data_game_team.team_id] += data_game_team.tackles
+      end
+      
+      #retruns GameTeam object with most tackles
+      least_tackles = tackles.min_by {|data_game_team , total_tackles| total_tackles}.first
+      least_tackles_by_season = season_games(season).filter_map do |game|
+         least_tackles.team_id if game.game_id == least_tackles.game_id
+      end
+      convert_team_id_to_name(least_tackles_by_season[0])
+      # require'pry';binding.pry
    end
 end
