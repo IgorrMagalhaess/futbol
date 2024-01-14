@@ -299,4 +299,28 @@ class StatTracker
       end
       coaches
    end
+   
+   def most_tackles(season)
+      games_this_season = season_games_by_id(season)
+      tackles = Hash.new(0)
+      @data_game_teams.each do |data_game_team|
+         tackles[data_game_team.team_id] += data_game_team.tackles if games_this_season.include?(data_game_team.game_id)
+      end
+ 
+      most_tackles = tackles.max_by {|data_game_team , total_tackles| total_tackles}.first
+      
+      convert_team_id_to_name(most_tackles)
+   end
+   
+   def fewest_tackles(season)
+      games_this_season = season_games_by_id(season)
+      tackles = Hash.new(0)
+      @data_game_teams.each do |data_game_team|
+         tackles[data_game_team.team_id] += data_game_team.tackles if games_this_season.include?(data_game_team.game_id)
+      end
+      
+      least_tackles = tackles.min_by {|data_game_team , total_tackles| total_tackles}.first
+
+      convert_team_id_to_name(least_tackles)
+   end
 end

@@ -195,4 +195,15 @@ RSpec.describe StatTracker do
          expect(@stat_tracker.least_accurate_team("20122013")).to eq("Sporting Kansas City")
       end
    end
+
+   describe 'tackles' do
+      
+      it 'returns a team with most tackles in a season' do
+         expect(@stat_tracker.most_tackles("20122013")).to eq("FC Dallas")
+      end
+
+      it 'returns a team with least tackles in a season' do
+         expect(@stat_tracker.fewest_tackles("20122013")).to be_a String
+      end
+   end
 end
